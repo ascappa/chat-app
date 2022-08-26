@@ -3,7 +3,11 @@ const http = require("http");
 const app = express();
 const { Server } = require("socket.io");
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "https://example.com",
+  },
+});
 
 app.use(express.static(__dirname));
 app.get("/", (req, res) => {
@@ -21,4 +25,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(() => console.log("listening"));
+server.listen(3000, () => console.log("listening"));
