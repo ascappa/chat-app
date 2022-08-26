@@ -5,7 +5,7 @@ const { Server } = require("socket.io");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://example.com",
+    origin: "https://chat-app-lilac-psi.vercel.app/",
   },
 });
 
