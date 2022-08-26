@@ -13,15 +13,20 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   socket.on("nickname", (nickname) => {
-    io.emit("chat message", `${nickname} joined the chat 😁`, nickname, {
+    const welcomeMsg = `${nickname} joined the chat 😁`;
+    const goodbyeMsg = `${nickname} left the chat 🥶`;
+    
+    io.emit("chat message", welcomeMsg, nickname, {
       welcomeMessage: true,
     });
+
     socket.on("disconnect", () => {
-      io.emit("chat message", `${nickname} left the chat 🥶`, nickname, {
+      io.emit("chat message", goodbyeMsg, nickname, {
         welcomeMessage: true,
       });
     });
   });
+
   socket.on("chat message", (msg, nickname) => {
     io.emit("chat message", msg, nickname);
   });

@@ -15,10 +15,14 @@ form.addEventListener("submit", (e) => {
   }
 });
 
-socket.on("chat message", (msg, nickname, options = { welcomeMessage: false }) => {
-  const message = document.createElement("li");
-  console.log(options.welcomeMessage)
-  message.textContent = options.welcomeMessage ? msg : `${nickname}: ${msg}`;
-  messages.append(message);
-  window.scrollBy(0, document.body.scrollHeight);
-});
+socket.on(
+  "chat message",
+  (msg, nickname, options = { welcomeMessage: false }) => {
+    const { welcomeMessage } = options;
+    const message = document.createElement("li");
+    console.log(welcomeMessage);
+    message.textContent = welcomeMessage ? msg : `${nickname}: ${msg}`;
+    messages.append(message);
+    window.scrollBy(0, document.body.scrollHeight);
+  }
+);
