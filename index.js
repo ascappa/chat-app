@@ -3,11 +3,7 @@ const http = require("http");
 const app = express();
 const { Server } = require("socket.io");
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "https://chat-app-lilac-psi.vercel.app/",
-  },
-});
+const io = new Server(server);
 
 app.use(express.static(__dirname));
 app.get("/", (req, res) => {
