@@ -10,13 +10,14 @@ socket.emit("nickname", nickname);
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (input.value) {
-    socket.emit("chat message", input.value);
+    socket.emit("chat message", input.value, nickname);
     input.value = "";
   }
 });
 
-socket.on("chat message", (msg, options = { welcomeMessage: false }) => {
+socket.on("chat message", (msg, nickname, options = { welcomeMessage: false }) => {
   const message = document.createElement("li");
+  console.log(options.welcomeMessage)
   message.textContent = options.welcomeMessage ? msg : `${nickname}: ${msg}`;
   messages.append(message);
   window.scrollBy(0, document.body.scrollHeight);
