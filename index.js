@@ -21,22 +21,23 @@ io.on("connection", async (socket) => {
     socket.emit("load message", { msg: msg.content, presenceChange: true })
   }
   );
-  socket.on("nickname", (nickname) => {
+  socket.on("nickname", async (nickname) => {
     const welcomeMsg = `${nickname} joined the chat 😁`;
     const goodbyeMsg = `${nickname} left the chat 🥶`;
-
     io.emit("chat message", {
       msg: welcomeMsg,
       nickname,
       presenceChange: true,
     });
+    await Message.create({content: welcomeMsg})
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
       io.emit("chat message", {
         msg: goodbyeMsg,
         nickname,
         presenceChange: true,
       });
+      await Message.create({content: goodbyeMsg})
     });
   });
   socket.on("save message", async (content) => {

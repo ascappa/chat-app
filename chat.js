@@ -15,7 +15,9 @@ socket.emit("nickname", nickname);
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (input.value) {
-    socket.emit("chat message", { msg: input.value, nickname });
+    const msg = input.value
+    socket.emit("chat message", { msg, nickname });
+    socket.emit("save message", `${nickname}: ${msg}`)
     input.value = "";
   }
 });
@@ -24,7 +26,6 @@ socket.on("chat message", async ({ msg, nickname, presenceChange = false }) => {
   const message = document.createElement("li");
   console.log(presenceChange);
   message.textContent = presenceChange ? msg : `${nickname}: ${msg}`;
-  socket.emit("save message", message.textContent)
   messages.append(message);
   window.scrollBy(0, document.body.scrollHeight);
 });
