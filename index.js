@@ -15,20 +15,24 @@ io.on("connection", (socket) => {
   socket.on("nickname", (nickname) => {
     const welcomeMsg = `${nickname} joined the chat 😁`;
     const goodbyeMsg = `${nickname} left the chat 🥶`;
-    
-    io.emit("chat message", welcomeMsg, nickname, {
-      welcomeMessage: true,
+
+    io.emit("chat message", {
+      msg: welcomeMsg,
+      nickname,
+      presenceChange: true,
     });
 
     socket.on("disconnect", () => {
-      io.emit("chat message", goodbyeMsg, nickname, {
-        welcomeMessage: true,
+      io.emit("chat message", {
+        msg: goodbyeMsg,
+        nickname,
+        presenceChange: true,
       });
     });
   });
 
-  socket.on("chat message", (msg, nickname) => {
-    io.emit("chat message", msg, nickname);
+  socket.on("chat message", ({ msg, nickname }) => {
+    io.emit("chat message", { msg, nickname });
   });
 });
 
