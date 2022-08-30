@@ -6,7 +6,7 @@ socket.on("load message", ({ msg, nickname, presenceChange = false }) => {
   const message = document.createElement("li");
   message.textContent = presenceChange ? msg : `${nickname}: ${msg}`;
   messages.append(message);
-  window.scrollBy(0, document.body.scrollHeight);
+  messages.scrollTo(0, messages.scrollHeight);
 })
 const nickname = prompt("Hey, what's your nickname?");
 
@@ -27,5 +27,5 @@ socket.on("chat message", async ({ msg, nickname, presenceChange = false }) => {
   console.log(presenceChange);
   message.textContent = presenceChange ? msg : `${nickname}: ${msg}`;
   messages.append(message);
-  window.scrollBy(0, document.body.scrollHeight);
+  messages.scrollBy(0, messages.scrollHeight);
 });
