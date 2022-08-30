@@ -43,7 +43,7 @@ io.on("connection", async (socket) => {
       await Message.create({content: goodbyeMsg})
     });
   });
-  socket.emit("nickname send")
+  socket.emit("send nickname")
   socket.on("save message", async (content) => {
     await Message.create({content})
   })

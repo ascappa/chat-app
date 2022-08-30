@@ -10,12 +10,12 @@ socket.on("load message", ({ msg, nickname, presenceChange = false }) => {
   messages.append(message);
   messages.scrollTo(0, messages.scrollHeight);
 });
-if (!localStorage.getItem("nickname")) {
-  localStorage.setItem("nickname", prompt("Hey, what's your nickname?"));
-}
-const nickname = localStorage.getItem("nickname");
-socket.on("connect", () => {
-  console.log("is" + socket.connected)
+let nickname;
+socket.on("send nickname", () => {
+  if (!localStorage.getItem("nickname")) {
+    localStorage.setItem("nickname", prompt("Hey, what's your nickname?"));
+  }
+  nickname = localStorage.getItem("nickname");
   socket.emit("nickname", nickname)
 })
 
