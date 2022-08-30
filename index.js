@@ -16,12 +16,15 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", async (socket) => {
+  console.log("connected")
   const messages = await Message.find({});
+  console.log(messages.length)
   messages.forEach((msg) => {
     socket.emit("load message", { msg: msg.content, presenceChange: true })
   }
-  );
+  )
   socket.on("nickname", async (nickname) => {
+    console.log("nickname received")
     const welcomeMsg = `${nickname} joined the chat 😁`;
     const goodbyeMsg = `${nickname} left the chat 🥶`;
     io.emit("chat message", {
@@ -40,12 +43,14 @@ io.on("connection", async (socket) => {
       await Message.create({content: goodbyeMsg})
     });
   });
+  socket.emit("nickname send")
   socket.on("save message", async (content) => {
     await Message.create({content})
   })
   socket.on("chat message", ({ msg, nickname }) => {
     io.emit("chat message", { msg, nickname });
   });
+  socket.on("test", (test) => console.log(test))
 });
 
 async function run() {
