@@ -18,7 +18,6 @@ app.get("/", (req, res) => {
 io.on("connection", async (socket) => {
   console.log("connected")
   const messages = await Message.find({});
-  console.log(messages.length)
   messages.forEach((msg) => {
     socket.emit("load message", { msg: msg.content, presenceChange: true })
   }
