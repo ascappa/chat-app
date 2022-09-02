@@ -40,7 +40,7 @@ li {
   color: white;
   width: fit-content;
   list-style-type: none;
-  margin: 10px;
+  margin: 12px;
   border-radius: 15px;
   max-width: 30ch;
   word-wrap: break-word;
@@ -72,5 +72,4 @@ button {
   height: calc(100vh - 50px);
   height: calc(var(--vh, 1vh) * 100 - 50px);
   overflow-y: scroll;
-  overflow-x: hidden;
 }
