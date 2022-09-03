@@ -10,6 +10,12 @@ const messages = document.getElementById("messages");
 const form = document.getElementById("form");
 const input = document.getElementById("input");
 
+window.addEventListener("resize", (e) => {
+  vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+  messages.scrollTo(0, messages.scrollHeight);
+});
+
 socket.on("load message", ({ msg, nickname, presenceChange = false }) => {
   const message = document.createElement("li");
   message.textContent = presenceChange ? msg : `${nickname}: ${msg}`;
@@ -42,7 +48,7 @@ socket.on(
     console.log(presenceChange);
     if (own) {
       message.textContent = `You: ${msg}`;
-      message.className = "own"
+      message.className = "own";
     } else {
       message.textContent = presenceChange ? msg : `${nickname}: ${msg}`;
     }
