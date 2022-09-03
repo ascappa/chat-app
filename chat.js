@@ -29,7 +29,7 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (input.value) {
     const msg = input.value;
-    socket.emit("own message", { msg, nickname });
+    socket.emit("chat message", { msg, nickname });
     socket.emit("save message", `${nickname}: ${msg}`);
     input.value = "";
   }
@@ -42,7 +42,7 @@ socket.on(
     console.log(presenceChange);
     if (own) {
       message.textContent = `You: ${msg}`;
-      message.className = "own-message"
+      message.className = "own"
     } else {
       message.textContent = presenceChange ? msg : `${nickname}: ${msg}`;
     }
