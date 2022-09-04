@@ -7,6 +7,14 @@ const messageSchema = new Schema(
       type: String,
       required: true,
     },
+    nickname: {
+      type: String,
+      required: true,
+    },
+    presenceChange: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );

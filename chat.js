@@ -16,12 +16,6 @@ window.addEventListener("resize", (e) => {
   messages.scrollTo(0, messages.scrollHeight);
 });
 
-socket.on("load message", ({ msg, nickname, presenceChange = false }) => {
-  const message = document.createElement("li");
-  message.textContent = presenceChange ? msg : `${nickname}: ${msg}`;
-  messages.append(message);
-  messages.scrollTo(0, messages.scrollHeight);
-});
 let nickname;
 socket.on("send nickname", () => {
   if (!localStorage.getItem("nickname")) {
@@ -34,24 +28,23 @@ socket.on("send nickname", () => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (input.value) {
-    const msg = input.value;
-    socket.emit("chat message", { msg, nickname });
-    socket.emit("save message", `${nickname}: ${msg}`);
+    const content = input.value;
+    socket.emit("chat message", { content, nickname });
+    socket.emit("save message", { content, nickname });
     input.value = "";
   }
 });
 
 socket.on(
   "chat message",
-  async ({ msg, nickname, presenceChange = false, own = false }) => {
+  async ({ content, nickname: messageNickname, presenceChange = false }) => {
     const message = document.createElement("li");
     console.log(presenceChange);
-    if (own) {
-      message.textContent = `You: ${msg}`;
-      message.className = "own";
-    } else {
-      message.textContent = presenceChange ? msg : `${nickname}: ${msg}`;
-    }
+    const displayedNickname =
+      nickname === messageNickname ? "You" : messageNickname;
+    message.textContent = presenceChange
+      ? `${displayedNickname} ${content}`
+      : `${displayedNickname}: ${content}`;
     messages.append(message);
     messages.scrollBy(0, messages.scrollHeight);
   }

@@ -7,50 +7,64 @@ const server = http.createServer(app);
 const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 const Message = require("./models/Message.js");
-const dotenv = require("dotenv")
-dotenv.config()
-
+const dotenv = require("dotenv");
+dotenv.config();
+// setup middleware for static files
 app.use(express.static(__dirname));
+// route for main page
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
-
+// socket.io connection handler
 io.on("connection", async (socket) => {
-  console.log("connected")
+  console.log("connected");
   let messages = await Message.find({});
-  messages = messages.slice(-25)
-  messages.forEach((msg) => {
-    socket.emit("load message", { msg: msg.content, presenceChange: true })
-  }
-  )
+  messages = messages.slice(-25);
+
   socket.on("nickname", async (nickname) => {
-    console.log("nickname received")
-    const welcomeMsg = `${nickname} joined the chat 😁`;
-    const goodbyeMsg = `${nickname} left the chat 🥶`;
+    console.log("nickname received");
+    messages.forEach((message) => {
+      const { content, nickname, presenceChange } = message;
+      socket.emit("chat message", { content, nickname, presenceChange });
+    });
+    const welcomeMsg = ` joined the chat 😁`;
+    const goodbyeMsg = ` left the chat 🥶`;
     io.emit("chat message", {
-      msg: welcomeMsg,
+      content: welcomeMsg,
       nickname,
       presenceChange: true,
     });
-    await Message.create({content: welcomeMsg})
+    await Message.create({
+      content: welcomeMsg,
+      nickname,
+      presenceChange: true,
+    });
 
     socket.on("disconnect", async () => {
       io.emit("chat message", {
-        msg: goodbyeMsg,
+        content: goodbyeMsg,
         nickname,
         presenceChange: true,
       });
-      await Message.create({content: goodbyeMsg})
+      await Message.create({
+        content: goodbyeMsg,
+        nickname,
+        presenceChange: true,
+      });
     });
   });
-  socket.emit("send nickname")
-  socket.on("save message", async (content) => {
-    await Message.create({content})
-  })
-  socket.on("chat message", ({ msg, nickname }) => {
-    io.emit("chat message", { msg, nickname });
+
+  socket.emit("send nickname");
+
+  socket.on("save message", async ({ content, nickname }) => {
+    await Message.create({ content, nickname });
   });
-  socket.on("test", (test) => console.log(test))
+
+  socket.on("chat message", ({ content, nickname }) => {
+    io.emit("chat message", { content, nickname });
+  });
+
+  socket.on("test", (test) => console.log(test));
 });
 
 async function run() {
@@ -61,4 +75,4 @@ async function run() {
     console.log(err);
   }
 }
-run()
+run();
