@@ -48,6 +48,8 @@ ul {
   margin: 0;
 }
 
+
+
 li {
   background: #4865ff;
   background: -webkit-linear-gradient(90deg, #4865ff 0%, #51ff47 100%);
@@ -59,6 +61,14 @@ li {
   border-radius: 15px;
   max-width: 30ch;
   word-wrap: break-word;
+}
+
+.own-message {
+  align-self: flex-end;
+}
+
+.presence-message {
+  align-self: center;
 }
 
 form {

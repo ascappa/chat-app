@@ -40,8 +40,15 @@ socket.on(
   async ({ content, nickname: messageNickname, presenceChange = false }) => {
     const message = document.createElement("li");
     console.log(presenceChange);
-    const displayedNickname =
-      nickname === messageNickname ? "You" : messageNickname;
+    if (nickname === messageNickname) {
+      displayedNickname = "You";
+      message.className = "own-message"
+    } else {
+      displayedNickname = messageNickname;
+    }
+    if (presenceChange) {
+      message.className = "presence-message"
+    }
     message.textContent = presenceChange
       ? `${displayedNickname} ${content}`
       : `${displayedNickname}: ${content}`;
