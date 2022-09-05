@@ -21,9 +21,9 @@ app.get("/", (req, res) => {
 // socket.io connection handler
 io.on("connection", async (socket) => {
   console.log("connected");
-  /* Getting the last 25 messages from the database. */
+  /* Getting the last 50 messages from the database. */
   let messages = await Message.find({});
-  messages = messages.slice(-25);
+  messages = messages.slice(-50);
 
   /* A function that is called when the client sends a nickname. It is used to send the last 25
   messages to the client and to send a message to all clients when a client joins or leaves the
