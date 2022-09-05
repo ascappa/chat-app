@@ -47,19 +47,28 @@ socket.on(
   "chat message",
   async ({ content, nickname: messageNickname, presenceChange = false }) => {
     const message = document.createElement("li");
+    const nicknameBlock = document.createElement("div");
+    const contentBlock = document.createElement("div");
+    const displayedNickname =
+      nickname === messageNickname ? "You" : messageNickname;
     console.log(presenceChange);
-    if (nickname === messageNickname) {
-      displayedNickname = "You";
-      message.className = "own-message";
-    } else {
-      displayedNickname = messageNickname;
-    }
     if (presenceChange) {
       message.className = "presence-message";
+      message.textContent = `${displayedNickname} ${content}`;
+    } else {
+      if (displayedNickname === "You") {
+        message.className = "own-message";
+      }
+      nicknameBlock.className = "nickname";
+      contentBlock.className = "content"
+      nicknameBlock.textContent = displayedNickname;
+      contentBlock.textContent = content;
+      message.append(nicknameBlock, contentBlock);
     }
-    message.textContent = presenceChange
-      ? `${displayedNickname} ${content}`
-      : `${displayedNickname}: ${content}`;
+
+    // message.textContent = presenceChange
+    //   ? `${displayedNickname} ${content}`
+    //   : `${displayedNickname}: ${content}`;
     messages.append(message);
     messages.scrollBy(0, messages.scrollHeight);
   }

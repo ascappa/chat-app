@@ -59,8 +59,11 @@ li {
   width: fit-content;
   list-style-type: none;
   border-radius: 15px;
-  max-width: 30ch;
-  word-wrap: break-word;
+  word-break: break-all;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .own-message {
@@ -70,10 +73,23 @@ li {
 }
 
 .presence-message {
+  max-width: 30ch;
   align-self: center;
+  flex-direction: row;
+  text-align: center;
+  column-gap: 5px;
   font-size: 0.8rem;
   color: hsl(242.11,48.72%,54.12%);
   background: hsl(253.85,52%,95.1%);
+}
+
+.nickname {
+  font-weight: bold;
+  max-width: 30ch;
+}
+
+.content {
+  max-width: 30ch;
 }
 
 form {
