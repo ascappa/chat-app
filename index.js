@@ -32,18 +32,18 @@ io.on("connection", async (socket) => {
     console.log("nickname received");
     /* Sending the last 25 messages to the client. */
     messages.forEach((message) => {
-      const { content, nickname, presenceChange } = message;
-      socket.emit("chat message", { content, nickname, presenceChange });
+      const { content, nickname, presenceChange, createdAt } = message;
+      socket.emit("chat message", { content, nickname, presenceChange, createdAt });
     });
     /* Sending a message to all clients when a client joins the chat and saving it to database. */
     const welcomeMsg = ` joined the chat 😁`;
     const goodbyeMsg = ` left the chat 🥶`;
-    io.emit("chat message", {
+    await Message.create({
       content: welcomeMsg,
       nickname,
       presenceChange: true,
     });
-    await Message.create({
+    io.emit("chat message", {
       content: welcomeMsg,
       nickname,
       presenceChange: true,
@@ -51,16 +51,16 @@ io.on("connection", async (socket) => {
 
     /* Sending a message to all clients when a client leaves the chat and saving it to database. */
     socket.on("disconnect", async () => {
-      io.emit("chat message", {
-        content: goodbyeMsg,
-        nickname,
-        presenceChange: true,
-      });
       await Message.create({
         content: goodbyeMsg,
         nickname,
         presenceChange: true,
       });
+      io.emit("chat message", {
+        content: goodbyeMsg,
+        nickname,
+        presenceChange: true,
+      });  
     });
   });
 
@@ -74,8 +74,8 @@ io.on("connection", async (socket) => {
 
   /* A function that is called when the client sends a message. It is used to send the message to all
   clients. */
-  socket.on("chat message", ({ content, nickname }) => {
-    io.emit("chat message", { content, nickname });
+  socket.on("chat message", ({ content, nickname, createdAt }) => {
+    io.emit("chat message", { content, nickname, createdAt });
   });
 });
 

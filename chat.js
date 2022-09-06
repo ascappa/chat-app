@@ -35,8 +35,8 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (input.value) {
     const content = input.value;
-    socket.emit("chat message", { content, nickname });
     socket.emit("save message", { content, nickname });
+    socket.emit("chat message", { content, nickname, createdAt: Date.now() });
     input.value = "";
   }
 });
@@ -45,30 +45,43 @@ form.addEventListener("submit", (e) => {
   presence, own, etc.) it is. */
 socket.on(
   "chat message",
-  async ({ content, nickname: messageNickname, presenceChange = false }) => {
+  async ({
+    content,
+    nickname: messageNickname,
+    presenceChange = false,
+    createdAt,
+  }) => {
+    /* Get date from database */
+    const date = new Date(createdAt);
+    console.log(typeof createdAt);
+    /* We created the elements that could be used by the different types of messages */
     const message = document.createElement("li");
     const nicknameBlock = document.createElement("div");
     const contentBlock = document.createElement("div");
+    const dateBlock = document.createElement("div");
     const displayedNickname =
       nickname === messageNickname ? "You" : messageNickname;
     console.log(presenceChange);
+    /* We display a joined/left message if the presence changed */
     if (presenceChange) {
       message.className = "presence-message";
       message.textContent = `${displayedNickname} ${content}`;
     } else {
+      /* Otherwise, we make a generic or own message depending on the nickname of the message */
       if (displayedNickname === "You") {
         message.className = "own-message";
       }
       nicknameBlock.className = "nickname";
-      contentBlock.className = "content"
+      contentBlock.className = "content";
+      dateBlock.className = "date";
       nicknameBlock.textContent = displayedNickname;
       contentBlock.textContent = content;
-      message.append(nicknameBlock, contentBlock);
+      /* We get the appropriate time string depending on the language (or location?) settings of the user*/ 
+      dateBlock.textContent = date.toLocaleTimeString(undefined, {
+        timeStyle: "short",
+      });
+      message.append(nicknameBlock, contentBlock, dateBlock);
     }
-
-    // message.textContent = presenceChange
-    //   ? `${displayedNickname} ${content}`
-    //   : `${displayedNickname}: ${content}`;
     messages.append(message);
     messages.scrollBy(0, messages.scrollHeight);
   }
