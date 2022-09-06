@@ -60,7 +60,7 @@ li {
   word-break: break-all;
   display: grid;
   grid-template-rows: auto auto;
-  grid-template-columns: auto minmax(20px, auto) auto;
+  grid-template-columns: max-content minmax(20px, auto) max-content;
 }
 
 .own-message {
