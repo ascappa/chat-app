@@ -82,7 +82,7 @@ li {
 
 .nickname {
   font-weight: bold;
-  max-width: 30ch;
+  max-width: 20ch;
   grid-column: 1 / span 1;
 }
 
@@ -94,7 +94,7 @@ li {
 
 .date {
   font-weight: bold;
-  max-width: 30ch;
+  max-width: 10ch;
   grid-column: 3 / span 1;
   grid-row: 1 / span 1;
   justify-self: end;
