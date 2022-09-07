@@ -57,7 +57,8 @@ li {
   width: fit-content;
   list-style-type: none;
   border-radius: 15px;
-  word-break: break-all;
+  /* this breaks the word only if it's too big to fit */
+  overflow-wrap: break-word;
   display: grid;
   grid-template-rows: auto auto;
   grid-template-columns: auto minmax(20px, auto) auto;
@@ -82,7 +83,7 @@ li {
 
 .nickname {
   font-weight: bold;
-  max-width: 20ch;
+  max-width: calc(20ch - 20px);
   grid-column: 1 / span 1;
 }
 
