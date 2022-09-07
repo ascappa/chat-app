@@ -54,14 +54,13 @@ li {
   /* background: -webkit-linear-gradient(90deg, #4865ff 0%, #51ff47 100%);
   background: linear-gradient(90deg, #4865ff 0%, #51ff47 100%); */
   padding: 0.6em;
-  /* max-width: 30ch; */
   width: fit-content;
   list-style-type: none;
   border-radius: 15px;
   word-break: break-all;
   display: grid;
   grid-template-rows: auto auto;
-  grid-template-columns: max-content minmax(20px, auto) max-content;
+  grid-template-columns: auto minmax(20px, auto) auto;
 }
 
 .own-message {
@@ -83,19 +82,19 @@ li {
 
 .nickname {
   font-weight: bold;
-  /* max-width: 20ch; */
+  max-width: 20ch;
   grid-column: 1 / span 1;
 }
 
 .content {
-  /* max-width: 30ch; */
+  max-width: 30ch;
   grid-column: 1 / span 3;
   justify-self: start;
 }
 
 .date {
   font-weight: bold;
-  /* max-width: 10ch; */
+  max-width: 10ch;
   grid-column: 3 / span 1;
   grid-row: 1 / span 1;
   justify-self: end;
