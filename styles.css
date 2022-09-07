@@ -53,15 +53,15 @@ li {
   background: hsl(16.92,100%,92.35%);
   /* background: -webkit-linear-gradient(90deg, #4865ff 0%, #51ff47 100%);
   background: linear-gradient(90deg, #4865ff 0%, #51ff47 100%); */
-  padding: 0.6em;
+  padding: 0.7em;
   width: fit-content;
+  max-width: min(40ch, 80%);
   list-style-type: none;
   border-radius: 15px;
   /* this breaks the word only if it's too big to fit */
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   display: grid;
-  grid-template-rows: auto auto;
-  grid-template-columns: auto minmax(20px, auto) auto;
+  grid-template: auto auto / auto minmax(20px, 1fr) auto;
 }
 
 .own-message {
@@ -71,7 +71,6 @@ li {
 }
 
 .presence-message {
-  max-width: 30ch;
   align-self: center;
   flex-direction: row;
   text-align: center;
@@ -83,22 +82,17 @@ li {
 
 .nickname {
   font-weight: bold;
-  max-width: calc(20ch - 20px);
   grid-column: 1 / span 1;
 }
 
 .content {
-  max-width: 30ch;
   grid-column: 1 / span 3;
-  justify-self: start;
 }
 
 .date {
   font-weight: bold;
-  max-width: 10ch;
   grid-column: 3 / span 1;
   grid-row: 1 / span 1;
-  justify-self: end;
 }
 
 form {
